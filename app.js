@@ -1,5 +1,6 @@
 const http = require('http');
 const hostname = '127.0.0.1';
+querystring = require('querystring');
 const port = process.env.port || 3000;
 
 const server = http.createServer((req, res) => {
@@ -13,10 +14,27 @@ const server = http.createServer((req, res) => {
         res.end();
     }
     else if(req.method === 'POST' && req.url === '/name'){
-        res.setHeader('Content-Type', 'application/json');
+        let data;
+        let body;
+        req.on('error', (err) => {
+            if(err) {
+                res.write('An error occurred somewhere');
+                res.end();
+            }
+        });
 
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        // when complete POST data is received
+        req.on('end', () => {
+            body = querystring.parse(body);
+            console.log(body);
+        });
+
+        res.setHeader('Content-Type', 'application/json');
         req.on("end", () => {
-            res.write(`Hello , Welcome to WeJapa Internships`);
+            res.write(`Hello  , Welcome to WeJapa Internships`);
             res.end();
         });
     }
