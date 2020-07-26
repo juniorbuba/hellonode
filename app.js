@@ -12,22 +12,16 @@ const server = http.createServer((req, res) => {
         res.write('Hello World, Welcome to WeJapa Internship');
         res.end();
     }
-    else if(req.method === 'POST' && req.url === '/'){
+    else if(req.method === 'POST' && req.url === '/name'){
         res.setHeader('Content-Type', 'application/json');
-        let data = [];
-        let payload;
 
-        req.on("data", chunk =>  {
-            data.push(chunk)
-        });
         req.on("end", () => {
-            payload =  JSON.parse(data).name;
-            res.write(`Hello ${payload}, Welcome to WeJapa Internships`);
+            res.write(`Hello , Welcome to WeJapa Internships`);
             res.end();
         });
     }
     else{
-        res.write('Page not found');
+        res.write("The page you're looking for doesn't exist");
         res.end();
     }
 });
